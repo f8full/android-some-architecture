@@ -31,10 +31,10 @@ class ConnectivityInfoFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ConnectivityInfoViewModel::class.java)
 
-        /*ConnectivityWatcher.init(viewModel,
+        ConnectivityWatcher.init(viewModel,
             NetworkRequest.Builder(),
             this.activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
-            ConnectivityWatcher.MyConnectivityManagerNetworkCallback())*/
+            ConnectivityWatcher.MyConnectivityManagerNetworkCallback())
     }
 
 }
