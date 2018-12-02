@@ -6,10 +6,15 @@ import android.net.NetworkRequest
 import android.os.Build
 import android.util.Log
 import com.f8full.somearchitecture.ui.connectivityinfo.ConnectivityInfoViewModel
+import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ConnectivityWatcher {
 
-    class MyConnectivityManagerNetworkCallback : ConnectivityManager.NetworkCallback() {
+    private val TAG = this.javaClass::getSimpleName
+
+    inner class MyConnectivityManagerNetworkCallback : ConnectivityManager.NetworkCallback() {
 
         private var availabilityByNetworkToStringMap : HashMap<String, Boolean> = HashMap()
 
@@ -36,15 +41,22 @@ class ConnectivityWatcher {
                 atLeastOneAvailable = atLeastOneAvailable || networkAvailable
             }
 
-            connInfoFragmentModel?.postNetworkConnectivityAvailable(atLeastOneAvailable)
+
+            this@ConnectivityWatcher.connInfoFragmentModel.postNetworkConnectivityAvailable(atLeastOneAvailable)
+            //connInfoFragmentModel
         }
     }
 
-    //To protect against external construction
-    @Suppress("unused")
-    private constructor()
+    private val connInfoFragmentModel: ConnectivityInfoViewModel
 
-    private constructor(connectivityInfoFragmentModel: ConnectivityInfoViewModel,
+    private val connManagerNetworkCallback: ConnectivityManager.NetworkCallback
+
+    //To protect against external construction
+    //@Suppress("unused")
+    //private constructor()
+
+    @Inject
+    constructor(connectivityInfoFragmentModel: ConnectivityInfoViewModel,
                         networkRequestBuilder: NetworkRequest.Builder,
                         connectivityManager: ConnectivityManager,
                         connectivityManagerNetworkCallback: MyConnectivityManagerNetworkCallback) {
@@ -58,17 +70,15 @@ class ConnectivityWatcher {
             connManagerNetworkCallback)
     }
 
-    companion object {
+    /*companion object {
 
-        private const val TAG = "ConnectivityWatcher"
+
         private var mInstance: ConnectivityWatcher? = null
 
-        private var connInfoFragmentModel: ConnectivityInfoViewModel? = null
-
-        private var connManagerNetworkCallback: ConnectivityManager.NetworkCallback? = null
 
 
-        fun init(mainActivityModel: ConnectivityInfoViewModel,
+
+        /*fun init(mainActivityModel: ConnectivityInfoViewModel,
                  networkRequestBuilder: NetworkRequest.Builder,
                  connectivityManager: ConnectivityManager,
                  connectivityManagerNetworkCallback: MyConnectivityManagerNetworkCallback) {
@@ -93,6 +103,6 @@ class ConnectivityWatcher {
 
                 mInstance = ConnectivityWatcher(mainActivityViewModel, networkRequestBuilder, connectivityManager, connectivityManagerNetworkCallback)
             }
-        }
-    }
+        }*/
+    }*/
 }
